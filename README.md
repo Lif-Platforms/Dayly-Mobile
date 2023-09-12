@@ -1,3 +1,6 @@
+<div align="center">
+  <img src="https://github.com/Lif-Platforms/Dayly-Mobile/blob/main/.github/dayly%20logo.png" /> 
+</div>
 <h1 align="center">Dayly-Mobile</h1>
 <p align="center">Dayly Mobile is the IOS/Android app for the  Dayly social media platform.</p>
 <div align="center">
