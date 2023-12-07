@@ -5,6 +5,16 @@ import { useState } from "react";
 import { AUTH_SERVER_URL } from '@env';
 
 function LoginPage({ navigation}) {
+
+    // Configure styles for header bar
+    navigation.setOptions({
+        headerTitle: '',
+        headerStyle: {
+            height: 45,
+            backgroundColor: 'white',
+        },
+    });
+
     // Define useStates for the username and password text inputs
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
