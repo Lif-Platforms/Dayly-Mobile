@@ -65,10 +65,10 @@ function LoginPage({ navigation}) {
 
     return(
         <View style={styles.page}>
-            <Image source={require('../assets/dayly-logo.png')} style={styles.image} />
+            <Image source={require('../assets/login/login_graphic.png')} style={styles.header_image} />
             <Text style={styles.title} >Login With Lif</Text>
-            <TextInput placeholder="Username" onChangeText={handleUsernameChange} style={styles.input} />
-            <TextInput placeholder="Password" onChangeText={handlePasswordChange} secureTextEntry={true} style={styles.input} />
+            <TextInput placeholder="Username" onChangeText={handleUsernameChange} style={styles.input} placeholderTextColor='#878787' />
+            <TextInput placeholder="Password" onChangeText={handlePasswordChange} secureTextEntry={true} style={styles.input} placeholderTextColor='#878787' />
             <TouchableOpacity style={styles.login_button} onPress={() => handle_login()}>
                 <Text style={styles.button_text}>Login</Text>
             </TouchableOpacity>
@@ -80,27 +80,27 @@ function LoginPage({ navigation}) {
 
 const styles = StyleSheet.create({
     page: {
-        backgroundColor: 'white',
-        height: '100%'
+        backgroundColor: '#000E15',
+        height: '100%',
+        margin: 0
     },
-    image: {
-        width: 300,
-        alignSelf: 'center',
-        resizeMode: 'contain',
-        height: 100,
-        marginTop: 50
+    header_image: {
+        width: 500,
+        resizeMode: 'cover',
+        height: 300,
     },
     title: {
         textAlign: 'center',
-        fontSize: 50,
+        fontSize: 48,
         marginTop: 10,
-        fontWeight: 600
+        color: 'white',
+        fontFamily: 'Arial'
     },
     login_button: {
-        backgroundColor: '#0066ff',
-        borderRadius: 10,
-        width: 150,
-        padding: 10,
+        backgroundColor: '#1C5BFF',
+        borderRadius: 15,
+        width: 170,
+        padding: 15,
         alignSelf: 'center',
         marginTop: 20
     },
@@ -111,13 +111,16 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     input: {
-        backgroundColor: '#f1f1f1',
-        borderColor: 'black',
+        backgroundColor: '#2D3F48',
         borderWidth: 2,
         fontSize: 30,
-        borderRadius: 10,
+        borderRadius: 30,
+        color: 'white',
         padding: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
         width: 350,
+        height: 87,
         alignSelf: 'center',
         marginTop: 20
     },
@@ -129,10 +132,12 @@ const styles = StyleSheet.create({
     },
     bottom_text: {
         textAlign: 'center',
-        marginTop: 20
+        marginTop: 20,
+        color: 'white'
     },
     create_account_text: {
-        color: 'blue'
+        color: '#1C5BFF',
+        textDecorationLine: 'underline'
     }
 });
 export default LoginPage;
