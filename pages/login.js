@@ -37,29 +37,48 @@ function LoginPage({ navigation}) {
 
     // Function for handling the login process
     function handle_login() {
-        console.log(`http request to: ${AUTH_SERVER_URL}/login/${username}/${password}`)
-        fetch(`${AUTH_SERVER_URL}/login/${username}/${password}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
+        console.log(`HTTP request to: ${AUTH_SERVER_URL}/lif_login`);
 
-                // Check the status of the login
-                if (data.Status === "Successful") {
+        // Error class for handling http status code errors
+        class StatusCodeError extends Error {
+            constructor(message, status_code) {
+              super(message);
+              this.status_code = status_code;
+            }
+          }
 
+        // Create form data for login request
+        const login_data = new FormData();
+
+        // Add credentials to form data
+        login_data.append('username', username);
+        login_data.append('password', password);
+
+        // Make HTTP request
+        fetch(`${AUTH_SERVER_URL}/lif_login`, {
+            method: 'POST',
+            body: login_data
+        })
+            .then(response => {
+                // Check http status code
+                if (response.ok) {
                     // Navigate to home page
                     // Also reset navigation stack so user can't navigate back to login page
                     navigation.reset({index: 0, routes: [{name: 'Home'}]});
-
-                } else if (data.Status === "Unsuccessful") {
-                    setLoginStatus('Incorrect Username or Password');
-                    
                 } else {
-                    setLoginStatus('Something Went Wrong!');
+                    throw new StatusCodeError(`Status code: ${response.status}`, response.status);
                 }
             })
             .catch(error => {
                 console.error(error);
-                setLoginStatus('Something Went Wrong!');
+                console.log(error.status_code);
+
+                // Check http error code
+                if (error.status_code === 401) {
+                    setLoginStatus('Incorrect Username or Password');
+                } else {
+                    setLoginStatus('Something Went Wrong!');
+                }      
             });
         }
 
