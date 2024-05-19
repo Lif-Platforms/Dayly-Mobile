@@ -1,5 +1,8 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from "react-native";
 import { useState } from "react";
+
+// Import styles
+import styles from "../styles/login/style";
 
 // Import environment variables
 import { AUTH_SERVER_URL } from '@env';
@@ -45,7 +48,7 @@ function LoginPage({ navigation}) {
               super(message);
               this.status_code = status_code;
             }
-          }
+        }
 
         // Create form data for login request
         const login_data = new FormData();
@@ -55,9 +58,10 @@ function LoginPage({ navigation}) {
         login_data.append('password', password);
 
         // Make HTTP request
-        fetch(`${AUTH_SERVER_URL}/lif_login`, {
+        fetch(`${AUTH_SERVER_URL}/auth/login`, {
             method: 'POST',
-            body: login_data
+            body: login_data,
+            cache: "no-cache"
         })
             .then(response => {
                 // Check http status code
@@ -86,8 +90,10 @@ function LoginPage({ navigation}) {
         <View style={styles.page}>
             <Image source={require('../assets/login/login_graphic.png')} style={styles.header_image} />
             <Text style={styles.title} >Login With Lif</Text>
-            <TextInput placeholder="Username" onChangeText={handleUsernameChange} style={styles.input} placeholderTextColor='#878787' />
-            <TextInput placeholder="Password" onChangeText={handlePasswordChange} secureTextEntry={true} style={styles.input} placeholderTextColor='#878787' />
+            <KeyboardAvoidingView behavior="position">
+                <TextInput placeholder="Username" onChangeText={handleUsernameChange} style={styles.input} placeholderTextColor='#878787' />
+                <TextInput placeholder="Password" onChangeText={handlePasswordChange} secureTextEntry={true} style={styles.input} placeholderTextColor='#878787' />
+            </KeyboardAvoidingView>
             <TouchableOpacity style={styles.login_button} onPress={() => handle_login()}>
                 <Text style={styles.button_text}>Login</Text>
             </TouchableOpacity>
@@ -97,66 +103,4 @@ function LoginPage({ navigation}) {
     )
 }
 
-const styles = StyleSheet.create({
-    page: {
-        backgroundColor: '#000E15',
-        height: '100%',
-        margin: 0
-    },
-    header_image: {
-        width: 500,
-        resizeMode: 'cover',
-        height: 300,
-    },
-    title: {
-        textAlign: 'center',
-        fontSize: 48,
-        marginTop: 10,
-        color: 'white',
-        fontFamily: 'Arial'
-    },
-    login_button: {
-        backgroundColor: '#1C5BFF',
-        borderRadius: 15,
-        width: 170,
-        padding: 15,
-        alignSelf: 'center',
-        marginTop: 20
-    },
-    button_text: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 25,
-        textAlign: 'center'
-    },
-    input: {
-        backgroundColor: '#2D3F48',
-        borderWidth: 2,
-        fontSize: 30,
-        borderRadius: 30,
-        color: 'white',
-        padding: 10,
-        paddingLeft: 20,
-        paddingRight: 20,
-        width: 350,
-        height: 87,
-        alignSelf: 'center',
-        marginTop: 20
-    },
-    login_status: {
-        color: 'red',
-        textAlign: 'center',
-        fontSize: 15,
-        marginTop: 20
-    },
-    bottom_text: {
-        textAlign: 'center',
-        marginTop: 20,
-        color: 'white'
-    },
-    create_account_text: {
-        color: '#1C5BFF',
-        textDecorationLine: 'underline'
-    }
-});
 export default LoginPage;
