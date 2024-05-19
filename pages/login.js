@@ -1,11 +1,18 @@
 import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from "react-native";
 import { useState } from "react";
+import * as SecureStore from 'expo-secure-store';
 
 // Import styles
 import styles from "../styles/login/style";
 
 // Import environment variables
 import { AUTH_SERVER_URL } from '@env';
+
+// Save username and token to device for later use
+async function auth_save(username, token) {
+    await SecureStore.setItemAsync("username", username);
+    await SecureStore.setItemAsync("token", token);
+  }
 
 function LoginPage({ navigation}) {
 
@@ -63,28 +70,34 @@ function LoginPage({ navigation}) {
             body: login_data,
             cache: "no-cache"
         })
-            .then(response => {
-                // Check http status code
-                if (response.ok) {
-                    // Navigate to home page
-                    // Also reset navigation stack so user can't navigate back to login page
-                    navigation.reset({index: 0, routes: [{name: 'Home'}]});
-                } else {
-                    throw new StatusCodeError(`Status code: ${response.status}`, response.status);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                console.log(error.status_code);
+        .then(response => {
+            // Check http status code
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new StatusCodeError(`Status code: ${response.status}`, response.status);
+            }
+        })
+        .then(data => {
+            // Save username and token to device
+            auth_save(username, data.token);
 
-                // Check http error code
-                if (error.status_code === 401) {
-                    setLoginStatus('Incorrect Username or Password');
-                } else {
-                    setLoginStatus('Something Went Wrong!');
-                }      
-            });
-        }
+            // Navigate to home page
+            // Also reset navigation stack so user can't navigate back to login page
+            navigation.reset({index: 0, routes: [{name: 'Home'}]});
+        })
+        .catch(error => {
+            console.error(error);
+            console.log(error.status_code);
+
+            // Check http error code
+            if (error.status_code === 401) {
+                setLoginStatus('Incorrect Username or Password');
+            } else {
+                setLoginStatus('Something Went Wrong!');
+            }      
+        });
+    }
 
     return(
         <View style={styles.page}>
