@@ -25,7 +25,7 @@ function HomePage({ navigation }) {
             <View style={styles.topNav}>
                 <Image source={require('../assets/dayly-logo.png')} style={styles.logo} />
                 <View style={styles.topNavButtons}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.push("Post")}>
                         <Image source={require("../assets/global/post-button.png")} style={styles.postButton} />
                     </TouchableOpacity>
                     <TouchableOpacity>
